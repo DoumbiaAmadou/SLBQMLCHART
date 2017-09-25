@@ -42,13 +42,13 @@
 
 #include <QtQuick/QQuickItem>
 
-class sliceata;
+class PieSlice;
 
 //![0]
 class PieChart : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<sliceata> slices READ slices)
+    Q_PROPERTY(QQmlListProperty<PieSlice> slices READ slices)
 //![0]
     Q_PROPERTY(QString name READ name WRITE setName)
 
@@ -61,15 +61,16 @@ public:
     void setName(const QString &name);
 
 //![2]
-    QQmlListProperty<sliceata> slices();
+    QQmlListProperty<PieSlice> slices();
 
 private:
-    static void append_slice(QQmlListProperty<sliceata> *list, sliceata *slice);
+    static void append_slice(QQmlListProperty<PieSlice> *list, PieSlice *slice);
 
     QString m_name;
-    QList<sliceata *> m_slices;
+    QList<PieSlice *> m_slices;
 };
 //![2]
+
 
 #endif
 

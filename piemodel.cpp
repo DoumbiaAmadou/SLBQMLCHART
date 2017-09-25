@@ -10,9 +10,9 @@ QQmlListProperty<PieData> PieModel::getPieData()
   return QQmlListProperty<PieData>(this,m_PieData);
 }
 
-void PieModel::setPieData(QList<QString> list)
+void PieModel::addPieData(PieData * pie)
 {
-
+     m_PieData <<pie  ;
 }
 
 
@@ -22,7 +22,7 @@ void PieData::addElement(int value, QString s){
   int prevSize = size();
   int cptsize=0;
   foreach (SliceData * slice, m_sliceList) {
-      slice->setStartangle(cptsize);
+      slice->setStartAngle(cptsize);
       cptsize+=(360 *slice->m_value)/prevSize;
     }
   emit sliceDataChanged();
@@ -45,15 +45,27 @@ void SliceData::setValue(int value)
   m_value = value;
 }
 
+
+
+void SliceData::setStartAngle(int startAngle)
+{
+    m_startAngle = startAngle;
+}
+
+int SliceData::getStartAngle() const
+{
+    return m_startAngle;
+}
+
 QString SliceData::getColor() const
 {
-  return m_color;
+    return m_color;
 }
 
 int SliceData::getAngle(){
-  return (360 *m_value)/m_parent->size();
+    return (360 *m_value)/m_parent->size();
 }
- QQmlListProperty<SliceData> PieData::getSliceData(){
+QQmlListProperty<SliceData> PieData::getSliceData(){
 
     return QQmlListProperty<SliceData>(this,m_sliceList);
  }

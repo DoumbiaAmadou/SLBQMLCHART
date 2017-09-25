@@ -10,9 +10,11 @@ class SliceData : public QObject
    Q_OBJECT
   Q_PROPERTY(int angle  READ getAngle  NOTIFY angleChanged)
   Q_PROPERTY(QString color READ getColor  NOTIFY colorChanged)
+    Q_PROPERTY(int startAngle READ getStartAngle  NOTIFY startAngleChanged)
 signals:
   void angleChanged();
   void colorChanged();
+  void startAngleChanged();
 
 public:
 
@@ -20,14 +22,10 @@ public:
   PieData *m_parent;
 
   int m_value ;
-  int m_startAngle ;
+  int m_startAngle;
   QString m_color;
 
 
-  void setStartangle(int startangle){
-
-    m_startAngle = startangle;
-  }
 
   SliceData(PieData *parent , int value ,QString color) {
 
@@ -41,6 +39,9 @@ public:
 
   void setValue(int value);
 
+  int getStartAngle() const;
+
+  void setStartAngle(int startAngle);
 public slots :
   int  getAngle();
 };
@@ -48,15 +49,18 @@ class PieData : public QObject {
   Q_OBJECT
   Q_PROPERTY(QQmlListProperty<SliceData> sliceData READ getSliceData  NOTIFY sliceDataChanged);
 
-signals :
+
+    signals :
 
   void sliceDataChanged();
 public :
   PieData(){
-    m_sliceList= QList<SliceData*>();
+
+    m_sliceList = QList<SliceData*>();
   }
 
- QList<SliceData*> m_sliceList ;
+  QList<SliceData*> m_sliceList ;
+
 public slots :
 
   QQmlListProperty<SliceData> getSliceData();
@@ -70,14 +74,16 @@ public slots :
 class PieModel : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QQmlListProperty<PieData> pieData READ getPieData  NOTIFY PieDataChanged) ;
+  Q_PROPERTY(QQmlListProperty<PieData> pieDatas READ getPieData  NOTIFY PieDataChanged) ;
 
   QList<PieData*> m_PieData ;
+
 public:
+
   explicit PieModel(QObject *parent = 0);
 
   QQmlListProperty<PieData> getPieData();
-  void setPieData(QList<QString> list );
+  void addPieData(PieData *  pie );
 signals:
 
   void PieDataChanged() ;

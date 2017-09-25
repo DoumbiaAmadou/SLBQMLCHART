@@ -4,21 +4,30 @@ import QtQuick.Layouts 1.2
 import Charts 1.0
 
 Item {
-    width: 640
-    height: 480
+    id: item1
+    width: 340
+    height: 240
 
 //    property alias button1: button1
 //    property alias button2: button2
 
     Item {
-        width: 300; height: 200
 
-        PieChart {
-            id : piemodel
-            anchors.centerIn: parent
-            width: 100; height: 100
+        width: 300;
+        height: 200;
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        Repeater{
+            model: model.pieDatas
+            delegate:  PieChart {
+                id : piemodel
+                anchors.centerIn: parent
+                width: 100; height: 100
+                slices:sliceData
+            }
+        }
 
-            slices: [
+        /* [
                 PieSlice {
                     anchors.fill: parent
                     color: "red"
@@ -34,8 +43,8 @@ Item {
                     color: "blue"
                     fromAngle: 160; angleSpan: 100
                 }
-            ]
-        }
+        ]*/
+
     }
 
 }

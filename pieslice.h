@@ -44,7 +44,7 @@
 #include <QColor>
 
 //![0]
-class sliceata : public QQuickPaintedItem
+class PieSlice : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(QColor color READ color WRITE setColor)
@@ -53,7 +53,7 @@ class sliceata : public QQuickPaintedItem
 //![0]
 
 public:
-    sliceata(QQuickItem *parent = 0);
+    PieSlice(QQuickItem *parent = 0);
 
     QColor color() const;
     void setColor(const QColor &color);

@@ -41,49 +41,46 @@
 
 #include <QPainter>
 
-sliceata::sliceata(QQuickItem *parent)
-    : QQuickPaintedItem(parent)
+PieSlice::PieSlice(QQuickItem *parent)
+    : QQuickPaintedItem(parent), m_fromAngle(0), m_angleSpan(0)
 {
 }
 
-QColor sliceata::color() const
+QColor PieSlice::color() const
 {
     return m_color;
 }
 
-void sliceata::setColor(const QColor &color)
+void PieSlice::setColor(const QColor &color)
 {
     m_color = color;
 }
 
-int sliceata::fromAngle() const
+int PieSlice::fromAngle() const
 {
     return m_fromAngle;
 }
 
-void sliceata::setFromAngle(int angle)
+void PieSlice::setFromAngle(int angle)
 {
     m_fromAngle = angle;
 }
 
-int sliceata::angleSpan() const
+int PieSlice::angleSpan() const
 {
     return m_angleSpan;
 }
 
-void sliceata::setAngleSpan(int angle)
+void PieSlice::setAngleSpan(int angle)
 {
     m_angleSpan = angle;
 }
 
-void sliceata::paint(QPainter *painter)
+void PieSlice::paint(QPainter *painter)
 {
     QPen pen(m_color, 2);
-    pen.setBrush(QBrush(m_color));
-//   painter->fillRect(boundingRect(),QBrush(QColor ("blue")));
-   painter->setPen(pen);
+    painter->setPen(pen);
     painter->setRenderHints(QPainter::Antialiasing, true);
     painter->drawPie(boundingRect().adjusted(1, 1, -1, -1), m_fromAngle * 16, m_angleSpan * 16);
-
 }
 
