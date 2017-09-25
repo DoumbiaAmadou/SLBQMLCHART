@@ -4,71 +4,67 @@
 #include "pieslice.h"
 
 #include <QObject>
-
-class SliceData
+class PieData;
+class SliceData : public QObject
 {
-  Q_PROPERTY(int angle  READ getAngle WRITE setAngle NOTIFY angleChanged)
-  Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
-
+   Q_OBJECT
+  Q_PROPERTY(int angle  READ getAngle  NOTIFY angleChanged)
+  Q_PROPERTY(QString color READ getColor  NOTIFY colorChanged)
+signals:
+  void angleChanged();
+  void colorChanged();
 
 public:
 
-  PieData * m_parent;
 
-  int m_value =1;
+  PieData *m_parent;
+
+  int m_value ;
+  int m_startAngle ;
+  QString m_color;
+
+
+  void setStartangle(int startangle){
+
+    m_startAngle = startangle;
+  }
+
   SliceData(PieData *parent , int value ,QString color) {
+
+    m_value =1;
     m_parent =parent ;
     m_value =value ;
     m_color=color ;
   }
 
+  QString getColor() const;
+
+  void setValue(int value);
+
 public slots :
-  int  getAngle(){
-    return (360 *m_value)/m_parent->size();
-  }
+  int  getAngle();
 };
-class PieData{
+class PieData : public QObject {
   Q_OBJECT
   Q_PROPERTY(QQmlListProperty<SliceData> sliceData READ getSliceData  NOTIFY sliceDataChanged);
 
 signals :
 
   void sliceDataChanged();
+public :
+  PieData(){
+    m_sliceList= QList<SliceData*>();
+  }
 
-
+ QList<SliceData*> m_sliceList ;
 public slots :
 
+  QQmlListProperty<SliceData> getSliceData();
+  void addElement(int value ,QString s  );
 
-  QList<SliceData*> m_sliceList ;
+  void  reset();
+  int size();
 
-  PieData(){
-    m_sliceList= QList();
-  }
-
-  QQmlListProperty<SliceData> getSliceData(){
-    return QQmlProperty<SliceData>(this,m_sliceList);
-  }
-  void addElement(int value ,QString s  ){
-    m_sliceList<<new PieData(this,value,s);
-    int prevSize = size();
-    int cptsize=0;
-    foreach (SliceData * slice, m_sliceList) {
-        slice->setStartangle(cptsize);
-        cptsize+=(360 *m_value)/prevSize;
-      }
-    emit sliceDataChanged();
-  }
-
-  void  reset(){
-    m_sliceList.clear();
-  }
-  int size(){
-    int cpt =0;
-    foreach (SliceData slice, m_sliceList) {
-        cpt+=slice->value;
-      }
-    return cpt;
-  }
 };
 
 class PieModel : public QObject
